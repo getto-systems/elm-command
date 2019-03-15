@@ -3,7 +3,7 @@
     "name": "getto-systems/getto-elm-command",
     "summary": "utilities for Cmd",
     "license": "MIT",
-    "version": "1.1.0",
+    "version": "1.0.1",
     "exposed-modules": [
         "Getto.Command",
         "Getto.Command.Transition"
