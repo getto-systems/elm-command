@@ -2,28 +2,29 @@
 
 utilities for `Model -> ( Model, Cmd msg )`
 
-```elm
--- TODO : basic usage
-```
-
 
 ###### Table of Contents
 
-- [Requirements](#Requirements)
-- [Usage](#Usage)
-- [License](#License)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [License](#license)
 
-<a id="Requirements"></a>
 ## Requirements
 
 - elm : 0.19
 
 
-<a id="Usage"></a>
 ## Usage
 
+- elm packages doc : [getto-systems/getto-elm-command](https://package.elm-lang.org/packages/getto-systems/getto-elm-command/latest/)
 
-<a id="License"></a>
+### Install
+
+```
+$ elm install getto-systems/getto-elm-command
+```
+
+
 ## License
 
 getto-transition is licensed under the [MIT](LICENSE) license.
