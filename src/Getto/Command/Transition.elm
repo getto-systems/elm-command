@@ -33,7 +33,7 @@ module Getto.Command.Transition exposing
  -}
 
 
-{-| `model -> Cmd msg`
+{-| function of generate `Cmd msg` from model
  -}
 type alias Transition model msg = model -> Cmd msg
 
@@ -41,15 +41,7 @@ type alias Transition model msg = model -> Cmd msg
 {-| set of getter (big -> small) and setter (small -> big -> big)
  -}
 type Prop big small = Prop (Get big small) (Set big small)
-
-
-{-| getter (big -> small)
- -}
 type alias Get big small = big -> small
-
-
-{-| setter (small -> big -> big)
- -}
 type alias Set big small = small -> big -> big
 
 
@@ -61,7 +53,8 @@ none = always Cmd.none
 
 {-| execute Transition
 
-    () |> Transition.exec Transition.none
+    model |> Transition.exec Transition.none
+    -- ( model, Cmd.none )
  -}
 exec : Transition model msg -> model -> ( model, Cmd msg )
 exec f model = ( model, model |> f )
@@ -69,7 +62,9 @@ exec f model = ( model, model |> f )
 
 {-| batch Transition
 
-    [ Transition.none ] |> Transition.batch
+    [ Transition.none
+    , Transition.none
+    ] |> Transition.batch
  -}
 batch : List (Transition model msg) -> Transition model msg
 batch list model =
@@ -90,18 +85,18 @@ prop : Get big small -> Set big small -> Prop big small
 prop = Prop
 
 
-{-| update small that describe Prop
+{-| update small that described by Prop
 
     type alias Model =
-      { sub : SubModel
+      { sub : String
       }
-    type alias SubModel = ()
 
     sub_ = Transition.prop .sub (\v m -> { m | sub = v })
 
-    updateSub model = ( model, Transition.none )
+    updateSub model = ( model ++ ", world", Transition.none )
 
-    { sub = () } |> Transition.update sub_ updateSub
+    { sub = "hello" } |> Transition.update sub_ updateSub
+    -- ( { sub = "hello, world" }, Transition msg )
  -}
 update : Prop big small -> (small -> ( small, msg )) -> big -> ( big, msg )
 update (Prop get set) updateSmall model =
@@ -111,15 +106,13 @@ update (Prop get set) updateSmall model =
 
 {-| map ( model, Transition ) tuple
 
-    type alias Model = ()
-
     type Msg
       = Sub SubMsg
 
-    type SubMsg
-      = HelloWorld
+    updateSub : model -> ( model, Transition model SubMsg )
 
-    ( (), Transition.none ) |> Transition.map Sub
+    model |> updateSub |> Transition.map Sub
+    -- ( model, Transition model Msg )
  -}
 map : (msg -> super) -> ( model, Transition m msg ) -> ( model, Transition m super )
 map super = Tuple.mapSecond (\f -> f >> Cmd.map super)
@@ -131,11 +124,9 @@ map super = Tuple.mapSecond (\f -> f >> Cmd.map super)
       { sub : SubModel
       }
 
-    type alias SubModel = ()
-
     Transition.compose
       Model
-        ( (), Transition.none )
+        ( subModel, Transition.none )
  -}
 compose : (a -> model) -> ( a, Transition m msg ) -> ( model, Transition m msg )
 compose model (a,msgA) = ( model a, msgA )
@@ -147,15 +138,11 @@ compose model (a,msgA) = ( model a, msgA )
       { sub   : SubModel
       , other : OtherModel
       }
-    type alias SubModel = ()
-    type alias OtherModel =
-      { name : String
-      }
 
     Transition.compose
       Model
-        ( (),              Transition.none )
-        ( { name = "John", Transition.none )
+        ( subModel,   Transition.none )
+        ( otherModel, Transition.none )
  -}
 compose2 : (a -> b -> model) -> ( a, Transition m msg ) -> ( b, Transition m msg ) -> ( model, Transition m msg )
 compose2 model (a,msgA) (b,msgB) = ( model a b, [msgA,msgB] |> batch )
