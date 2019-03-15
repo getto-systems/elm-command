@@ -1,3 +1,7 @@
+# Version : 1.0.2
+
+fix: docs
+
 # Version : 1.0.1
 
 fix: release
