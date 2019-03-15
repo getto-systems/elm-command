@@ -1,4 +1,4 @@
-# getto-transition
+# Elm : Getto.Command
 
 utilities for `Model -> ( Model, Cmd msg )`
 
