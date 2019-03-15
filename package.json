@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "scripts": {
+    "elm": "elm",
+    "test": "elm-test"
+  },
+  "author": "shun@getto.systems",
+  "license": "MIT",
+  "devDependencies": {
+    "elm": "^0.19.0",
+    "elm-test": "^0.19.0-rev6"
+  }
+}

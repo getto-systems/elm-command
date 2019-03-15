@@ -1,4 +1,4 @@
-# REPOSITORY NAME
+# getto-transition
 
 utilities for `Model -> ( Model, Cmd msg )`
 
