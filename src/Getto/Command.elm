@@ -19,19 +19,14 @@ module Getto.Command exposing
 
 {-| create 'Do nothing' command
 
-    type alias Model =
-      { name : String
-      }
-
-    { name = "John" } |> Command.none
+    model |> Command.none
+    -- ( model, Cmd.none )
  -}
 none : model -> ( model, Cmd msg )
 none model = ( model, Cmd.none )
 
 
 {-| map `Cmd msg` in command tuple
-
-    type alias Model = ()
 
     type Msg
       = Sub SubMsg
@@ -42,7 +37,8 @@ none model = ( model, Cmd.none )
     update : Msg -> Model -> ( Model, Cmd Msg )
     update message model =
       case message of
-        Sub msg -> model |> updateSub msg |> Command.map Sub
+        Sub msg ->
+          model |> updateSub msg |> Command.map Sub
 
 
     updateSub : SubMsg -> Model -> ( Model, Cmd SubMsg )
@@ -56,22 +52,20 @@ map = Cmd.map >> Tuple.mapSecond
 
 {-| merge 'Cmd msg' in command tuple
 
-    type alias Model = ()
-
     type Msg
       = HelloWorld
 
     init : ( Model, Cmd Msg )
     init =
       ( (), Cmd.none )
-      |> Command.andThen initA
-      |> Command.andThen initB
+      |> Command.andThen updateA
+      |> Command.andThen updateB
 
-    initA : ( Model, Cmd Msg )
-    initA = ( (), Cmd.none )
+    updateA : ( Model, Cmd Msg )
+    updateA model = ( model, Cmd.none )
 
-    initB : ( Model, Cmd Msg )
-    initB = ( (), Cmd.none )
+    updateB : ( Model, Cmd Msg )
+    updateB model = ( model, Cmd.none )
  -}
 andThen : (model -> ( model, Cmd msg )) -> ( model, Cmd msg ) -> ( model, Cmd msg )
 andThen f (model,cmd) =
