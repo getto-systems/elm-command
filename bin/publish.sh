@@ -2,7 +2,7 @@
 
 publish_main(){
   npm install
-  : # npm run elm publish
+  npm run elm publish
 }
 
 publish_main
