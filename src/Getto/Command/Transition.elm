@@ -61,7 +61,7 @@ none = always Cmd.none
 
 {-| execute Transition
 
-    () |> Getto.Command.Transition.exec Getto.Command.Transition.none
+    () |> Transition.exec Transition.none
  -}
 exec : Transition model msg -> model -> ( model, Cmd msg )
 exec f model = ( model, model |> f )
@@ -69,7 +69,7 @@ exec f model = ( model, model |> f )
 
 {-| batch Transition
 
-    [ Getto.Command.Transition.none ] |> Getto.Command.Transition.batch
+    [ Transition.none ] |> Transition.batch
  -}
 batch : List (Transition model msg) -> Transition model msg
 batch list model =
@@ -84,7 +84,7 @@ batch list model =
       { name : String
       }
 
-    name_ = Getto.Command.Transition.prop .name (\v m -> { m | name = v })
+    name_ = Transition.prop .name (\v m -> { m | name = v })
  -}
 prop : Get big small -> Set big small -> Prop big small
 prop = Prop
@@ -97,11 +97,11 @@ prop = Prop
       }
     type alias SubModel = ()
 
-    sub_ = Getto.Command.Transition.prop .sub (\v m -> { m | sub = v })
+    sub_ = Transition.prop .sub (\v m -> { m | sub = v })
 
-    updateSub model = ( model, Getto.Command.Transition.none )
+    updateSub model = ( model, Transition.none )
 
-    { sub = () } |> Getto.Command.Transition.update sub_ updateSub
+    { sub = () } |> Transition.update sub_ updateSub
  -}
 update : Prop big small -> (small -> ( small, msg )) -> big -> ( big, msg )
 update (Prop get set) updateSmall model =
@@ -119,7 +119,7 @@ update (Prop get set) updateSmall model =
     type SubMsg
       = HelloWorld
 
-    ( (), Getto.Command.Transition.none ) |> Getto.Command.Transition.map Sub
+    ( (), Transition.none ) |> Transition.map Sub
  -}
 map : (msg -> super) -> ( model, Transition m msg ) -> ( model, Transition m super )
 map super = Tuple.mapSecond (\f -> f >> Cmd.map super)
@@ -133,9 +133,9 @@ map super = Tuple.mapSecond (\f -> f >> Cmd.map super)
 
     type alias SubModel = ()
 
-    Getto.Command.Transition.compose
+    Transition.compose
       Model
-        ( (), Getto.Command.Transition.none )
+        ( (), Transition.none )
  -}
 compose : (a -> model) -> ( a, Transition m msg ) -> ( model, Transition m msg )
 compose model (a,msgA) = ( model a, msgA )
@@ -152,10 +152,10 @@ compose model (a,msgA) = ( model a, msgA )
       { name : String
       }
 
-    Getto.Command.Transition.compose
+    Transition.compose
       Model
-        ( (),              Getto.Command.Transition.none )
-        ( { name = "John", Getto.Command.Transition.none )
+        ( (),              Transition.none )
+        ( { name = "John", Transition.none )
  -}
 compose2 : (a -> b -> model) -> ( a, Transition m msg ) -> ( b, Transition m msg ) -> ( model, Transition m msg )
 compose2 model (a,msgA) (b,msgB) = ( model a b, [msgA,msgB] |> batch )

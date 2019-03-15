@@ -23,7 +23,7 @@ module Getto.Command exposing
       { name : String
       }
 
-    { name = "John" } |> Getto.Command.none
+    { name = "John" } |> Command.none
  -}
 none : model -> ( model, Cmd msg )
 none model = ( model, Cmd.none )
@@ -42,7 +42,7 @@ none model = ( model, Cmd.none )
     update : Msg -> Model -> ( Model, Cmd Msg )
     update message model =
       case message of
-        Sub msg -> model |> updateSub msg |> Getto.Command.map Sub
+        Sub msg -> model |> updateSub msg |> Command.map Sub
 
 
     updateSub : SubMsg -> Model -> ( Model, Cmd SubMsg )
@@ -64,8 +64,8 @@ map = Cmd.map >> Tuple.mapSecond
     init : ( Model, Cmd Msg )
     init =
       ( (), Cmd.none )
-      |> Getto.Command.andThen initA
-      |> Getto.Command.andThen initB
+      |> Command.andThen initA
+      |> Command.andThen initB
 
     initA : ( Model, Cmd Msg )
     initA = ( (), Cmd.none )
