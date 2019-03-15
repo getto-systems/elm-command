@@ -1,0 +1,8 @@
+image: node:11.11.0-stretch
+
+release:
+  only:
+    - release@getto-systems-labo/elm/command
+  script:
+    - ./bin/push_tags.sh
+    - ./bin/publish.sh

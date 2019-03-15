@@ -1,12 +1,11 @@
 {
     "type": "package",
-    "name": "getto/command",
+    "name": "getto-systems/getto-elm-command",
     "summary": "utilities for Cmd",
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "exposed-modules": [
-        "Getto.Command",
-        "Getto.Command.Transition"
+        "Getto.Command"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {

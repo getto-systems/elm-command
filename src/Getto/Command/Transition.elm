@@ -17,6 +17,9 @@ module Getto.Command.Transition exposing
   , compose8
   )
 
+{-| Getto.Command.Transition
+ -}
+
 type alias Transition model msg = model -> Cmd msg
 
 type Prop big small = Prop (Get big small) (Set big small)
